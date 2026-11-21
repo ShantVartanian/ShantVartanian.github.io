@@ -12,8 +12,10 @@
   --body: "Inter", "Helvetica Neue", Arial, sans-serif;
   --gutter: max(16px, 4vw);
   --read: 720px;
+  --fit-h: calc(100vh - 40px);   /* tallest an image may be and still fit on screen */
   color-scheme: dark;
 }
+@supports (height: 100svh) { :root { --fit-h: calc(100svh - 40px); } }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { background: var(--bg); -webkit-text-size-adjust: 100%; }
@@ -58,7 +60,7 @@ h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; color: va
 /* Covers */
 .covers { display: grid; gap: clamp(36px, 4vw, 72px); padding-block: clamp(10px, 1vw, 16px) clamp(48px, 6vw, 96px); }
 .cover { display: block; text-align: center; }
-.cover-img { aspect-ratio: 16 / 9; overflow: hidden; background: #1a1a1a; }
+.cover-img { aspect-ratio: 16 / 9; width: min(100%, calc(var(--fit-h) * 1.7778)); margin-inline: auto; overflow: hidden; background: #1a1a1a; }
 .cover-img img { width: 100%; height: 100%; object-fit: cover; transition: opacity .5s; }
 .cover:hover .cover-img img { opacity: .82; }
 .cover h2 { font-size: 24px; line-height: 28px; margin-top: 18px; }
@@ -80,8 +82,8 @@ h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; color: va
 .still img { width: 100%; aspect-ratio: var(--r); object-fit: cover; background: #1a1a1a; }
 
 /* Film */
-.film { position: relative; aspect-ratio: 16 / 9; background: #000; }
-.film--43 { aspect-ratio: 4 / 3; max-height: 88vh; margin-inline: auto; }
+.film { --r: 1.7778; position: relative; aspect-ratio: 16 / 9; width: min(100%, calc(var(--fit-h) * var(--r))); margin-inline: auto; background: #000; }
+.film--43 { --r: 1.3333; aspect-ratio: 4 / 3; }
 .film-poster { all: unset; position: absolute; inset: 0; cursor: pointer; }
 .film-poster img { width: 100%; height: 100%; object-fit: cover; opacity: .85; transition: opacity .4s; }
 .film-poster:hover img, .film-poster:focus-visible img { opacity: 1; }
@@ -106,10 +108,11 @@ h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; color: va
 .sequence .pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.2vw, 20px); align-items: start; }
 .sequence figcaption { text-align: center; font-size: 14px; color: var(--muted); padding-top: 10px; max-width: 80ch; margin-inline: auto; }
 .seq-btn { all: unset; display: block; width: 100%; cursor: zoom-in; }
+.sequence img { width: auto; max-width: 100%; max-height: var(--fit-h); margin-inline: auto; }
 
 /* Process switch (Block 5) */
 .stage-fig { margin: 0; }
-.stage-frame { position: relative; aspect-ratio: 3 / 2; background: #1a1a1a; overflow: hidden; }
+.stage-frame { position: relative; aspect-ratio: 3 / 2; width: min(100%, calc(var(--fit-h) * 1.5)); margin-inline: auto; background: #1a1a1a; overflow: hidden; }
 .stage-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .45s ease; }
 .stage-frame img.on { opacity: 1; }
 .stage-bar { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 26px; padding-top: 14px; }
